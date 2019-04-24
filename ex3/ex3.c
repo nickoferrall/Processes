@@ -11,5 +11,36 @@ int main(void)
 {
     // Your code here
 
+    pid_t childPid;
+    childPid = fork();
+
+    printf("In the beginning..\n");
+
+    if (childPid == 0)
+    {
+        printf("Hello!\n");
+        exit(0);
+    }
+
+    else if (childPid < 0)
+    {
+        printf("Fork failed\n");
+    }
+
+    else // main parent process after the fork succeeds
+    {
+        int returnStatus;
+        waitpid(childPid, &returnStatus, 0); // parent waits for the child to terminate
+
+        if (returnStatus == 0)
+        {
+            printf("Goddbye.\n");
+        }
+        if (returnStatus == 1)
+        {
+            printf("Child process terminated with an error.\n");
+        }
+    }
+
     return 0;
 }

@@ -1,0 +1,3 @@
+Some text: We're in the second clause.. esoooo!
+Integer: 1, float: 7810.000000
+A character: Z
