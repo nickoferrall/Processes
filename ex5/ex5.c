@@ -29,37 +29,37 @@ int main(void)
     {
 
         // close read descriptor only
-        close(fd[0]);
+        close(fd[1]);
 
-        // send the value on the write descriptor
+        // send the value on the read descriptor
         // ** not sure what write descriptor is
         // ** find out what write does
         // val = 100;
-        write(fd[1], &msg1, sizeof(msg1));
-        write(fd[1], &msg2, sizeof(msg2));
-        write(fd[1], &msg3, sizeof(msg3));
-        printf("Parent(%d) send value: %s\n", getpid(), msg1);
-        printf("Parent(%d) send value: %s\n", getpid(), msg2);
-        printf("Parent(%d) send value: %s\n", getpid(), msg3);
+        read(fd[0], &msg1, sizeof(msg1));
+        read(fd[0], &msg2, sizeof(msg2));
+        read(fd[0], &msg3, sizeof(msg3));
+        printf("Parent(%d) reading.. %s\n", getpid(), msg1);
+        printf("Parent(%d) reading.. %s\n", getpid(), msg2);
+        printf("Parent(%d) reading.. %s\n", getpid(), msg3);
 
         // close the write descriptor
-        close(fd[1]);
+        close(fd[0]);
     }
     else // child: reading only so close the write descriptor
     {
         // reading only so close the write descriptor
-        close(fd[1]);
+        close(fd[0]);
 
-        // now read the data
-        read(fd[0], &msg1, sizeof(msg1));
-        read(fd[0], &msg1, sizeof(msg2));
-        read(fd[0], &msg1, sizeof(msg3));
-        printf("Child(%d) received value: %s\n", getpid(), msg1);
-        printf("Child(%d) received value: %s\n", getpid(), msg2);
-        printf("Child(%d) received value: %s\n", getpid(), msg3);
+        // now write the data
+        write(fd[1], &msg1, sizeof(msg1));
+        write(fd[1], &msg2, sizeof(msg2));
+        write(fd[1], &msg3, sizeof(msg3));
+        printf("Child(%d) writing.. %s\n", getpid(), msg1);
+        printf("Child(%d) writing.. %s\n", getpid(), msg2);
+        printf("Child(%d) writing.. %s\n", getpid(), msg3);
 
         // close read descriptor
-        close(fd[0]);
+        close(fd[1]);
     }
 
     return 0;
