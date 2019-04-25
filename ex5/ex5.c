@@ -19,7 +19,6 @@ int main(void)
     // Your code here
 
     int fd[2];
-    // int val = 0;
 
     // create pipe descriptors. Try to print this**
     pipe(fd);
@@ -28,13 +27,9 @@ int main(void)
     if (fork() != 0)
     {
 
-        // close read descriptor only
+        // close write descriptor only
         close(fd[1]);
 
-        // send the value on the read descriptor
-        // ** not sure what write descriptor is
-        // ** find out what write does
-        // val = 100;
         read(fd[0], &msg1, sizeof(msg1));
         read(fd[0], &msg2, sizeof(msg2));
         read(fd[0], &msg3, sizeof(msg3));
@@ -42,12 +37,12 @@ int main(void)
         printf("Parent(%d) reading.. %s\n", getpid(), msg2);
         printf("Parent(%d) reading.. %s\n", getpid(), msg3);
 
-        // close the write descriptor
+        // close the read descriptor
         close(fd[0]);
     }
     else // child: reading only so close the write descriptor
     {
-        // reading only so close the write descriptor
+        // close read descriptor
         close(fd[0]);
 
         // now write the data
@@ -58,7 +53,7 @@ int main(void)
         printf("Child(%d) writing.. %s\n", getpid(), msg2);
         printf("Child(%d) writing.. %s\n", getpid(), msg3);
 
-        // close read descriptor
+        // close write descriptor
         close(fd[1]);
     }
 
